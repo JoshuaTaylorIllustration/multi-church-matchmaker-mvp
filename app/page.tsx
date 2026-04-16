@@ -18,17 +18,14 @@ export default function EventQrLandingPage() {
           </p>
         </header>
 
-        <div className="rounded-3xl bg-white px-4 py-5 shadow-[0_10px_35px_rgba(17,24,39,0.07)] sm:px-6 sm:py-6">
-          <div className="relative mx-auto h-44 w-full max-w-[18rem]">
-            <Image
-              src="/illustrations/people-line-splash.png"
-              alt="Event attendees standing together"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+        <Image
+          src="/illustrations/people-line-splash.png"
+          alt="Event attendees standing together"
+          width={1536}
+          height={1024}
+          className="h-auto w-full"
+          priority
+        />
 
         <button
           type="button"
