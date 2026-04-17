@@ -1,9 +1,24 @@
-export default function EventQrLandingPage() {
+export const dynamic = "force-dynamic";
+
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function HomePage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/post-login");
+  }
+
   return (
     <main className="min-h-screen bg-white px-5 py-8">
       <section className="mx-auto flex w-full max-w-md flex-col gap-6">
         <p className="inline-flex w-fit rounded-full bg-flyerYellow px-3 py-1 text-sm font-semibold text-gray-900">
-          We are so glad you&apos;re here
+          Multi-Church Matchmaker MVP
         </p>
 
         <header className="space-y-3">
@@ -11,26 +26,18 @@ export default function EventQrLandingPage() {
             Welcome to the Event!
           </h1>
           <p className="text-base leading-relaxed text-gray-700">
-            This app helps you sign up for today&apos;s event and connect with a
-            meaningful, faith-centered matchmaker journey.
+            Sign up or log in to continue to your role-specific dashboard.
           </p>
         </header>
 
-        <div className="flex h-44 items-center justify-center rounded-2xl border-2 border-dashed border-yellow-300 bg-yellow-50 text-sm font-medium text-gray-600">
-          Illustration placeholder
+        <div className="flex gap-3">
+          <Link href="/signup" className="flex-1 rounded-2xl bg-flyerYellow px-5 py-4 text-center text-base font-bold text-gray-900">
+            Sign up
+          </Link>
+          <Link href="/login" className="flex-1 rounded-2xl border border-gray-300 px-5 py-4 text-center text-base font-bold text-gray-900">
+            Log in
+          </Link>
         </div>
-
-        <button
-          type="button"
-          className="w-full rounded-2xl bg-flyerYellow px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:brightness-95 active:scale-[0.99]"
-        >
-          Sign Up for This Event + Matchmaker App
-        </button>
-
-        <p className="mt-3 text-center text-xs leading-relaxed text-gray-500">
-          By continuing, you agree to the two required agreements: Safety Policy
-          and Biblical View of Marriage.
-        </p>
       </section>
     </main>
   );
