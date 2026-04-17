@@ -64,3 +64,13 @@ In development mode, `/login` shows buttons that auto-fill demo credentials for:
 - reference
 - admin
 
+
+## 6) Role-aware MVP stubs
+
+After login, each role now lands in a role-specific workspace with:
+
+- role-aware side navigation
+- role-specific feature cards/stubs for core workflows
+- simple status labels (`Ready`, `Stub`, `Planned`)
+
+These are intentionally lightweight scaffolds so we can implement real data flows next.
