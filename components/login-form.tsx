@@ -16,9 +16,9 @@ export function LoginForm() {
   function useDemoAccount(type: "user" | "reference" | "platform_admin") {
     const password = "Passw0rd!";
     const emailMap = {
-      user: "demo.user@example.com",
-      reference: "demo.reference@example.com",
-      platform_admin: "demo.admin@example.com",
+      user: "demo.user@churchmvp.app",
+      reference: "demo.reference@churchmvp.app",
+      platform_admin: "demo.admin@churchmvp.app",
     };
 
     setEmail(emailMap[type]);

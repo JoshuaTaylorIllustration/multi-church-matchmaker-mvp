@@ -34,20 +34,28 @@ This creates:
 
 ## 3) Create demo accounts (quick manual flow)
 
-Supabase does not offer a convenient SQL-only path for setting auth passwords, so use this quick method:
+Supabase may reject reserved domains such as `example.com`, so use realistic emails like below.
+
+Quick method (app signup):
 
 1. Go to app `/signup` and create these users with password `Passw0rd!`:
-   - `demo.user@example.com`
-   - `demo.reference@example.com`
-   - `demo.admin@example.com`
+   - `demo.user@churchmvp.app`
+   - `demo.reference@churchmvp.app`
+   - `demo.admin@churchmvp.app`
 2. In Supabase SQL Editor run:
 
 ```sql
-update public.profiles set role = 'reference' where email = 'demo.reference@example.com';
-update public.profiles set role = 'platform_admin' where email = 'demo.admin@example.com';
+update public.profiles set role = 'reference' where email = 'demo.reference@churchmvp.app';
+update public.profiles set role = 'platform_admin' where email = 'demo.admin@churchmvp.app';
 ```
 
-`demo.user@example.com` stays role `user` by default.
+`demo.user@churchmvp.app` stays role `user` by default.
+
+Alternative (Supabase Dashboard):
+
+- Go to **Authentication → Users → Add user**
+- Create the same 3 users with **Auto Confirm User** turned on
+- Use the SQL updates above to assign `reference` and `platform_admin` roles
 
 ## 4) Role routes
 
