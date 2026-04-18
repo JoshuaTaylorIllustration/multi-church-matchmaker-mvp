@@ -112,3 +112,19 @@ Notes:
 - Disabled in production (`NODE_ENV=production`).
 - Requester must be signed in as `platform_admin`.
 - Area directors are the role intended to handle payments; the billing flow is currently scaffolded and planned for implementation.
+
+
+## 8) Pricing model (current MVP assumptions)
+
+User billing:
+
+- Free tier: bi-weekly matches
+- Premium tier: daily matches, target range `$8–$15/month`
+
+Area director billing:
+
+- Area directors pay only an activation fee when a new area is created
+
+Future option:
+
+- Add event payments later if needed

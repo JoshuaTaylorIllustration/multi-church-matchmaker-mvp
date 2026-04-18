@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { FeatureCard } from "@/components/feature-card";
 import { RoleAppLayout } from "@/components/role-app-layout";
 import { requireProfileForRole } from "@/lib/auth/guards";
+import { AREA_DIRECTOR_ACTIVATION_FEE } from "@/lib/product/pricing";
 
 export default async function AreaPage() {
   const profile = await requireProfileForRole("/area");
@@ -28,8 +29,8 @@ export default async function AreaPage() {
           />
         </div>
         <FeatureCard
-          title="Area billing and spin-up"
-          body="Area directors are responsible for in-app payments when activating a new area. This billing workflow is planned next."
+          title="Area activation billing"
+          body={`${AREA_DIRECTOR_ACTIVATION_FEE} Recurring user subscription billing is handled at the user-plan layer.`}
           status="Planned"
         />
         <FeatureCard

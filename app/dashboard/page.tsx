@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { FeatureCard } from "@/components/feature-card";
 import { RoleAppLayout } from "@/components/role-app-layout";
 import { requireProfileForRole } from "@/lib/auth/guards";
+import { EVENT_PAYMENTS_NOTE, USER_PLANS } from "@/lib/product/pricing";
 
 export default async function DashboardPage() {
   const profile = await requireProfileForRole("/dashboard");
@@ -22,8 +23,9 @@ export default async function DashboardPage() {
           />
         </div>
         <FeatureCard
-          title="Reference connection"
-          body="See your assigned reference (matchmaker), send context updates, and track pending conversations."
+          title="Membership tiers"
+          status="Ready"
+          body={`${USER_PLANS.free.name}: ${USER_PLANS.free.cadence}. ${USER_PLANS.premium.name}: ${USER_PLANS.premium.cadence} at ${USER_PLANS.premium.priceRange}. ${EVENT_PAYMENTS_NOTE}`}
         />
         <div id="health">
           <FeatureCard
@@ -33,8 +35,8 @@ export default async function DashboardPage() {
           />
         </div>
         <FeatureCard
-          title="Event participation"
-          body="Accept event invites sent by area directors and confirm your attendance status."
+          title="Reference connection"
+          body="See your assigned reference (matchmaker), send context updates, and track pending conversations."
         />
       </div>
     </RoleAppLayout>
