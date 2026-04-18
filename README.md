@@ -34,28 +34,30 @@ This creates:
 
 ## 3) Create demo accounts (quick manual flow)
 
-Supabase may reject reserved domains such as `example.com`, so use realistic emails like below.
+Supabase Auth can reject reserved/non-routable demo domains (like `example.com`) and also enforces signup/email rate limits.
 
-Quick method (app signup):
+Use real inbox aliases so signup is valid and easy to manage:
 
 1. Go to app `/signup` and create these users with password `Passw0rd!`:
-   - `demo.user@churchmvp.app`
-   - `demo.reference@churchmvp.app`
-   - `demo.admin@churchmvp.app`
+   - `yourname+demo.user@gmail.com`
+   - `yourname+demo.reference@gmail.com`
+   - `yourname+demo.admin@gmail.com`
 2. In Supabase SQL Editor run:
 
 ```sql
-update public.profiles set role = 'reference' where email = 'demo.reference@churchmvp.app';
-update public.profiles set role = 'platform_admin' where email = 'demo.admin@churchmvp.app';
+update public.profiles set role = 'reference' where email = 'yourname+demo.reference@gmail.com';
+update public.profiles set role = 'platform_admin' where email = 'yourname+demo.admin@gmail.com';
 ```
 
-`demo.user@churchmvp.app` stays role `user` by default.
+`yourname+demo.user@gmail.com` stays role `user` by default.
 
-Alternative (Supabase Dashboard):
+Alternative (recommended for speed/rate limits):
 
 - Go to **Authentication → Users → Add user**
 - Create the same 3 users with **Auto Confirm User** turned on
 - Use the SQL updates above to assign `reference` and `platform_admin` roles
+
+If you hit `email rate limit exceeded`, that limit is from Supabase Auth settings. In development, create users from the Dashboard flow above or raise limits in your Supabase Auth Rate Limit settings.
 
 ## 4) Role routes
 
@@ -66,11 +68,10 @@ Alternative (Supabase Dashboard):
 
 ## 5) Dev demo helper
 
-In development mode, `/login` shows buttons that auto-fill demo credentials for:
+In development mode, `/login` shows a helper that:
 
-- user
-- reference
-- admin
+- reminds you to use real inbox aliases for demo users
+- can auto-fill the shared demo password (`Passw0rd!`)
 
 
 ## 6) Role-aware MVP stubs

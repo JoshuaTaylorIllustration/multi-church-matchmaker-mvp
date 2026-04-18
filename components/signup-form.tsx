@@ -16,9 +16,20 @@ export function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  function isLikelyBlockedDemoEmail(email: string) {
+    const normalized = email.toLowerCase();
+    return normalized.endsWith("@example.com") || normalized.endsWith("@churchmvp.app");
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+
+    if (isLikelyBlockedDemoEmail(form.email)) {
+      setError("That email domain may be blocked by Supabase. Use a real inbox address (aliases with +demo are great).");
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -85,6 +96,10 @@ export function SignupForm() {
           required
         />
       </label>
+
+      <p className="text-xs text-gray-600">
+        For demo accounts, use a real inbox alias (example: <code>yourname+demo.user@gmail.com</code>).
+      </p>
 
       <label className="block space-y-2 text-sm">
         <span className="font-medium">Password</span>

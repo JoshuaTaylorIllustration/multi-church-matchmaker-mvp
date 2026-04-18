@@ -13,16 +13,8 @@ export function LoginForm() {
 
   const showDemoHelper = process.env.NODE_ENV === "development";
 
-  function useDemoAccount(type: "user" | "reference" | "platform_admin") {
-    const password = "Passw0rd!";
-    const emailMap = {
-      user: "demo.user@churchmvp.app",
-      reference: "demo.reference@churchmvp.app",
-      platform_admin: "demo.admin@churchmvp.app",
-    };
-
-    setEmail(emailMap[type]);
-    setPassword(password);
+  function useDemoPassword() {
+    setPassword("Passw0rd!");
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -82,13 +74,15 @@ export function LoginForm() {
       </button>
 
       {showDemoHelper ? (
-        <div className="space-y-2 rounded-lg border border-dashed border-gray-300 p-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Dev demo helper</p>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => useDemoAccount("user")}>Use demo user</button>
-            <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => useDemoAccount("reference")}>Use demo reference</button>
-            <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => useDemoAccount("platform_admin")}>Use demo admin</button>
-          </div>
+        <div className="space-y-2 rounded-lg border border-dashed border-gray-300 p-3 text-xs text-gray-700">
+          <p className="font-semibold uppercase tracking-wide text-gray-500">Dev demo helper</p>
+          <p>
+            Use real inbox aliases for demo users (for example, <code>yourname+demo.user@gmail.com</code>,
+            <code> yourname+demo.reference@gmail.com</code>, <code>yourname+demo.admin@gmail.com</code>).
+          </p>
+          <button type="button" className="rounded border px-2 py-1" onClick={useDemoPassword}>
+            Fill demo password only
+          </button>
         </div>
       ) : null}
     </form>
