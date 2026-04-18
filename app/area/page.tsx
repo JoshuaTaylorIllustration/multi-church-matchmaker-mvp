@@ -28,8 +28,8 @@ export default async function AreaPage() {
           />
         </div>
         <FeatureCard
-          title="Role simulation view"
-          body="Preview simplified user and reference views while editing area-level workflows."
+          title="Area billing and spin-up"
+          body="Area directors are responsible for in-app payments when activating a new area. This billing workflow is planned next."
           status="Planned"
         />
         <FeatureCard

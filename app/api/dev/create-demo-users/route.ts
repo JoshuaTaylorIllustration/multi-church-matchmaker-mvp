@@ -8,11 +8,11 @@ type DemoUser = {
   first_name: string;
   last_name: string;
   church_name: string;
-  role: "user" | "reference" | "platform_admin";
+  role: "user" | "reference" | "area_director" | "platform_admin";
 };
 
 const DEMO_PASSWORD = "Passw0rd!";
-const DEMO_USERS: DemoUser[] = [
+const CORE_DEMO_USERS: DemoUser[] = [
   {
     email: "demo.user@local.test",
     password: DEMO_PASSWORD,
@@ -39,12 +39,21 @@ const DEMO_USERS: DemoUser[] = [
   },
 ];
 
+const AREA_DIRECTOR_DEMO_USER: DemoUser = {
+  email: "demo.area@local.test",
+  password: DEMO_PASSWORD,
+  first_name: "Demo",
+  last_name: "Area Director",
+  church_name: "Grace Church",
+  role: "area_director",
+};
+
 function isAlreadyRegisteredError(message: string) {
   const normalized = message.toLowerCase();
   return normalized.includes("already") || normalized.includes("registered");
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   if (process.env.NODE_ENV === "production") {
     return NextResponse.json(
       { error: "Demo user creation is disabled in production." },
@@ -94,9 +103,24 @@ export async function POST() {
     },
   });
 
+  let includeAreaDirector = true;
+
+  try {
+    const body = (await request.json()) as { includeAreaDirector?: boolean };
+    if (typeof body?.includeAreaDirector === "boolean") {
+      includeAreaDirector = body.includeAreaDirector;
+    }
+  } catch {
+    // keep default includeAreaDirector=true when body is empty
+  }
+
+  const targetUsers = includeAreaDirector
+    ? [...CORE_DEMO_USERS, AREA_DIRECTOR_DEMO_USER]
+    : CORE_DEMO_USERS;
+
   const results: Array<{ email: string; status: string }> = [];
 
-  for (const demoUser of DEMO_USERS) {
+  for (const demoUser of targetUsers) {
     const { data, error } = await admin.auth.admin.createUser({
       email: demoUser.email,
       password: demoUser.password,
@@ -144,7 +168,9 @@ export async function POST() {
   }
 
   return NextResponse.json({
-    message: "Demo user operation complete.",
+    message: includeAreaDirector
+      ? "Demo user operation complete (including area director)."
+      : "Demo user operation complete (core roles only).",
     shared_password: DEMO_PASSWORD,
     users: results,
   });

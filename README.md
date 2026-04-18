@@ -101,8 +101,9 @@ These are intentionally lightweight scaffolds so we can implement real data flow
 
 A dev-only button is available in the **Admin** workspace under **User table tools**. It will:
 
-- create (or sync) these auth users: `demo.user@local.test`, `demo.reference@local.test`, `demo.admin@local.test`
-- set roles to `user`, `reference`, and `platform_admin`
+- from a context action menu, create either core users or core + area director
+- demo emails include: `demo.user@local.test`, `demo.reference@local.test`, `demo.admin@local.test`, and optional `demo.area@local.test`
+- set roles to `user`, `reference`, `platform_admin`, and optional `area_director`
 - use shared password: `Passw0rd!`
 
 Notes:
@@ -110,3 +111,4 @@ Notes:
 - Requires `SUPABASE_SERVICE_ROLE_KEY` to be set.
 - Disabled in production (`NODE_ENV=production`).
 - Requester must be signed in as `platform_admin`.
+- Area directors are the role intended to handle payments; the billing flow is currently scaffolded and planned for implementation.
