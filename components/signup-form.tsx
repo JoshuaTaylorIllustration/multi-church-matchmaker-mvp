@@ -33,7 +33,7 @@ export function SignupForm() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error: signupError } = await supabase.auth.signUp({
+    const { data, error: signupError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
       options: {
@@ -52,7 +52,15 @@ export function SignupForm() {
       return;
     }
 
-    router.push("/login?message=Account%20created.%20Please%20log%20in.");
+    if (data.session) {
+      router.push("/post-login");
+      router.refresh();
+      return;
+    }
+
+    router.push(
+      "/login?message=Account%20created.%20Please%20confirm%20your%20email%20before%20logging%20in.",
+    );
   }
 
   return (

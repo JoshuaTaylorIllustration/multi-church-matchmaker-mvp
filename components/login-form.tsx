@@ -10,8 +10,11 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
 
   const showDemoHelper = process.env.NODE_ENV === "development";
+  const canResendConfirmation = error?.toLowerCase().includes("email not confirmed");
 
   function useDemoPassword() {
     setPassword("Passw0rd!");
@@ -20,6 +23,7 @@ export function LoginForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setResendMessage(null);
     setLoading(true);
 
     const supabase = createClient();
@@ -37,6 +41,31 @@ export function LoginForm() {
 
     router.push("/post-login");
     router.refresh();
+  }
+
+  async function resendConfirmationEmail() {
+    if (!email) {
+      setResendMessage("Enter your email first.");
+      return;
+    }
+
+    setResendLoading(true);
+    setResendMessage(null);
+
+    const supabase = createClient();
+    const { error: resendError } = await supabase.auth.resend({
+      type: "signup",
+      email,
+    });
+
+    setResendLoading(false);
+
+    if (resendError) {
+      setResendMessage(resendError.message);
+      return;
+    }
+
+    setResendMessage("Confirmation email sent. Check your inbox and spam folder.");
   }
 
   return (
@@ -64,6 +93,21 @@ export function LoginForm() {
       </label>
 
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
+
+      {canResendConfirmation ? (
+        <div className="space-y-2 rounded-lg bg-amber-50 p-3 text-sm">
+          <p className="text-amber-900">Your email is not confirmed yet.</p>
+          <button
+            type="button"
+            onClick={resendConfirmationEmail}
+            disabled={resendLoading}
+            className="rounded border border-amber-300 bg-white px-2 py-1 text-xs font-semibold text-amber-900"
+          >
+            {resendLoading ? "Sending..." : "Resend confirmation email"}
+          </button>
+          {resendMessage ? <p className="text-xs text-amber-900">{resendMessage}</p> : null}
+        </div>
+      ) : null}
 
       <button
         type="submit"

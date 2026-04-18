@@ -34,6 +34,16 @@ This creates:
 - auth trigger to create one profile per auth user
 - default role = `user`
 
+## 2.1) Email confirmation behavior (important)
+
+If your Supabase project has **Confirm email** enabled, signup creates the account but login will fail with `Email not confirmed` until the user clicks the link in their inbox.
+
+Options for development:
+
+- Keep confirm-email enabled (safer): users must confirm first.
+- Turn off confirm-email in **Supabase Dashboard → Authentication → Providers → Email** to allow immediate login after signup.
+- Use the admin one-click demo utility (section 7), which creates users with `email_confirm: true`.
+
 ## 3) Create demo accounts (quick manual flow)
 
 Supabase Auth can reject reserved/non-routable demo domains (like `example.com`) and also enforces signup/email rate limits.
