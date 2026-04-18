@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -15,15 +15,23 @@ export function SignupForm() {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [devFallbackMessage, setDevFallbackMessage] = useState<string | null>(null);
+  const [devFallbackLoading, setDevFallbackLoading] = useState(false);
 
   function isLikelyBlockedDemoEmail(email: string) {
     const normalized = email.toLowerCase();
     return normalized.endsWith("@example.com") || normalized.endsWith("@churchmvp.app");
   }
 
+  const canUseDevFallback = useMemo(() => {
+    if (process.env.NODE_ENV !== "development") return false;
+    return (error ?? "").toLowerCase().includes("rate limit");
+  }, [error]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setDevFallbackMessage(null);
 
     if (isLikelyBlockedDemoEmail(form.email)) {
       setError("That email domain may be blocked by Supabase. Use a real inbox address (aliases with +demo are great).");
@@ -61,6 +69,30 @@ export function SignupForm() {
     router.push(
       "/login?message=Account%20created.%20Please%20confirm%20your%20email%20before%20logging%20in.",
     );
+  }
+
+  async function handleDevQuickSignup() {
+    setDevFallbackLoading(true);
+    setDevFallbackMessage(null);
+
+    const response = await fetch("/api/dev/quick-signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+
+    const payload = (await response.json()) as { error?: string; message?: string };
+    setDevFallbackLoading(false);
+
+    if (!response.ok) {
+      setDevFallbackMessage(payload.error ?? "Dev quick signup failed.");
+      return;
+    }
+
+    setDevFallbackMessage(payload.message ?? "Dev quick signup complete.");
+    router.push("/login?message=Dev%20quick%20signup%20complete.%20Please%20log%20in.");
   }
 
   return (
@@ -122,6 +154,24 @@ export function SignupForm() {
       </label>
 
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
+
+      {canUseDevFallback ? (
+        <div className="space-y-2 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            Supabase email rate limit hit. In development, you can use quick signup to create a confirmed user without
+            sending email.
+          </p>
+          <button
+            type="button"
+            onClick={handleDevQuickSignup}
+            disabled={devFallbackLoading}
+            className="rounded border border-amber-300 bg-white px-2 py-1 text-xs font-semibold"
+          >
+            {devFallbackLoading ? "Creating..." : "Use dev quick signup"}
+          </button>
+          {devFallbackMessage ? <p className="text-xs">{devFallbackMessage}</p> : null}
+        </div>
+      ) : null}
 
       <button
         type="submit"

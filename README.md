@@ -43,6 +43,7 @@ Options for development:
 - Keep confirm-email enabled (safer): users must confirm first.
 - Turn off confirm-email in **Supabase Dashboard → Authentication → Providers → Email** to allow immediate login after signup.
 - Use the admin one-click demo utility (section 7), which creates users with `email_confirm: true`.
+- Use dev quick signup fallback on `/signup` when rate-limited (section 9).
 
 ## 3) Create demo accounts (quick manual flow)
 
@@ -69,7 +70,7 @@ Alternative (recommended for speed/rate limits):
 - Create the same 3 users with **Auto Confirm User** turned on
 - Use the SQL updates above to assign `reference` and `platform_admin` roles
 
-If you hit `email rate limit exceeded`, that limit is from Supabase Auth settings. In development, create users from the Dashboard flow above or raise limits in your Supabase Auth Rate Limit settings.
+If you hit `email rate limit exceeded`, that limit is from Supabase Auth settings. In development, create users from the Dashboard flow above, use the `/signup` dev quick-signup fallback, or raise limits in your Supabase Auth Rate Limit settings.
 
 ## 4) Role routes
 
@@ -128,3 +129,19 @@ Area director billing:
 Future option:
 
 - Add event payments later if needed
+
+
+## 9) Dev quick-signup fallback for rate limits
+
+When Supabase returns `email rate limit exceeded` during signup in development, the `/signup` page now shows **Use dev quick signup**.
+
+What it does:
+
+- calls `POST /api/dev/quick-signup`
+- creates the user with `email_confirm: true` (no confirmation email sent)
+- sets default profile role to `user`
+
+Safety:
+
+- disabled in production (`NODE_ENV=production`)
+- requires `SUPABASE_SERVICE_ROLE_KEY` on the server
