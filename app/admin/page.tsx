@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { FeatureCard } from "@/components/feature-card";
 import { RoleAppLayout } from "@/components/role-app-layout";
 import { requireProfileForRole } from "@/lib/auth/guards";
+import { CreateDemoUsersPanel } from "@/components/admin/create-demo-users-panel";
 
 export default async function AdminPage() {
   const profile = await requireProfileForRole("/admin");
@@ -37,6 +38,7 @@ export default async function AdminPage() {
           title="Demo account panel"
           body="Use the development helper accounts to verify role behavior quickly during feature iteration."
         />
+        <CreateDemoUsersPanel />
       </div>
     </RoleAppLayout>
   );

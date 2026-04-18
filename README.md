@@ -8,6 +8,7 @@ Create these variables:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (required only for the admin dev utility button)
 
 For local development, put them in:
 
@@ -18,6 +19,7 @@ Example:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
 ```
 
 ## 2) Supabase database setup
@@ -83,3 +85,18 @@ After login, each role now lands in a role-specific workspace with:
 - simple status labels (`Ready`, `Stub`, `Planned`)
 
 These are intentionally lightweight scaffolds so we can implement real data flows next.
+
+
+## 7) One-click demo user utility (admin page)
+
+A dev-only button is available in the **Admin** workspace under **User table tools**. It will:
+
+- create (or sync) these auth users: `demo.user@local.test`, `demo.reference@local.test`, `demo.admin@local.test`
+- set roles to `user`, `reference`, and `platform_admin`
+- use shared password: `Passw0rd!`
+
+Notes:
+
+- Requires `SUPABASE_SERVICE_ROLE_KEY` to be set.
+- Disabled in production (`NODE_ENV=production`).
+- Requester must be signed in as `platform_admin`.
