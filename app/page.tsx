@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function EventQrLandingPage() {
   return (
     <main className="min-h-screen bg-white px-5 py-8">
@@ -20,12 +22,12 @@ export default function EventQrLandingPage() {
           Illustration placeholder
         </div>
 
-        <button
-          type="button"
-          className="w-full rounded-2xl bg-flyerYellow px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:brightness-95 active:scale-[0.99]"
+        <Link
+          href="/signup"
+          className="inline-flex w-full items-center justify-center rounded-2xl bg-flyerYellow px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:brightness-95 active:scale-[0.99]"
         >
           Sign Up for This Event + Matchmaker App
-        </button>
+        </Link>
 
         <p className="mt-3 text-center text-xs leading-relaxed text-gray-500">
           By continuing, you agree to the two required agreements: Safety Policy
