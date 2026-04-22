@@ -9,10 +9,12 @@ export default function EventQrLandingPage() {
         </p>
 
         <header className="space-y-3">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Welcome to the Event!</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
+            Welcome to the Event!
+          </h1>
           <p className="text-base leading-relaxed text-gray-700">
-            This app helps you sign up for today&apos;s event and connect with a meaningful, faith-centered
-            matchmaker journey.
+            This app helps you sign up for today&apos;s event and connect with a
+            meaningful, faith-centered matchmaker journey.
           </p>
         </header>
 
@@ -20,24 +22,16 @@ export default function EventQrLandingPage() {
           Illustration placeholder
         </div>
 
-        <div className="space-y-4">
-          <Link
-            href="/signup"
-            className="inline-flex w-full items-center justify-center rounded-2xl bg-flyerYellow px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:brightness-95 active:scale-[0.99]"
-          >
-            Sign Up for This Event + Matchmaker App
-          </Link>
-
-          <Link
-            href="/login"
-            className="inline-flex w-full items-center justify-center rounded-2xl bg-gray-100 px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:bg-gray-200"
-          >
-            Log In to Existing Account
-          </Link>
-        </div>
+        <Link
+          href="/signup"
+          className="inline-flex w-full items-center justify-center rounded-2xl bg-flyerYellow px-5 py-4 text-base font-bold text-gray-900 shadow-sm transition hover:brightness-95 active:scale-[0.99]"
+        >
+          Sign Up for This Event + Matchmaker App
+        </Link>
 
         <p className="mt-3 text-center text-xs leading-relaxed text-gray-500">
-          By continuing, you agree to the two required agreements: Safety Policy and Biblical View of Marriage.
+          By continuing, you agree to the two required agreements: Safety Policy
+          and Biblical View of Marriage.
         </p>
       </section>
     </main>
