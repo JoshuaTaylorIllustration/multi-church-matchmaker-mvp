@@ -2,7 +2,17 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 const authPages = ["/login", "/signup"];
-const protectedPrefixes = ["/dashboard", "/reference", "/admin", "/area", "/post-login"];
+const protectedPrefixes = [
+  "/dashboard",
+  "/user",
+  "/reference",
+  "/matchmaker",
+  "/admin",
+  "/platform-admin",
+  "/area",
+  "/area-director",
+  "/post-login",
+];
 
 export async function middleware(request: NextRequest) {
   const { response, user } = await updateSession(request);

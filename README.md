@@ -79,6 +79,15 @@ If you hit `email rate limit exceeded`, that limit is from Supabase Auth setting
 - `reference` → `/reference`
 - `user` → `/dashboard`
 
+### Route aliases
+
+To avoid 404 issues from legacy/account-type URLs, these aliases are supported:
+
+- `/user` → `/dashboard`
+- `/matchmaker` → `/reference`
+- `/area-director` → `/area`
+- `/platform-admin` → `/admin`
+
 ## 5) Dev demo helper
 
 In development mode, `/login` shows a helper that:

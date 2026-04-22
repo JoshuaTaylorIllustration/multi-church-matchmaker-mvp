@@ -14,13 +14,28 @@ const roleToRoute: Record<AppRole, string> = {
   user: "/dashboard",
 };
 
+function normalizeRole(rawRole: string) {
+  return rawRole.trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
+}
+
+const roleAliases: Record<string, AppRole> = {
+  admin: "platform_admin",
+  platformadmin: "platform_admin",
+  area: "area_director",
+  director: "area_director",
+  matchmaker: "reference",
+  participant: "user",
+};
+
 export function getRouteForRole(role: string | null | undefined): string {
   if (!role) return "/dashboard";
 
-  if (role === "admin") return "/admin"; // optional compatibility alias
+  const normalizedRole = normalizeRole(role);
 
-  if (APP_ROLES.includes(role as AppRole)) {
-    return roleToRoute[role as AppRole];
+  const mappedRole = roleAliases[normalizedRole] ?? normalizedRole;
+
+  if (APP_ROLES.includes(mappedRole as AppRole)) {
+    return roleToRoute[mappedRole as AppRole];
   }
 
   return "/dashboard";
