@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        flyerYellow: "#FFED00",
+        flyerYellow: "#FFED04",
       },
     },
   },
