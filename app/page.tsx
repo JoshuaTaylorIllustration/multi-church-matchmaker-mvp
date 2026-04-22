@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function EventQrLandingPage() {
   return (
     <main className="min-h-screen bg-white px-5 py-8">
@@ -16,9 +18,14 @@ export default function EventQrLandingPage() {
           </p>
         </header>
 
-        <div className="flex h-44 items-center justify-center rounded-2xl border-2 border-dashed border-yellow-300 bg-yellow-50 text-sm font-medium text-gray-600">
-          Illustration placeholder
-        </div>
+        <Image
+          src="/illustrations/people-line-splash.png"
+          alt="Event attendees standing together"
+          width={1536}
+          height={1024}
+          className="h-auto w-full"
+          priority
+        />
 
         <button
           type="button"
