@@ -1,0 +1,134 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+
+export function LoginForm() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
+
+  const showDemoHelper = process.env.NODE_ENV === "development";
+  const canResendConfirmation = error?.toLowerCase().includes("email not confirmed");
+
+  function useDemoPassword() {
+    setPassword("Passw0rd!");
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setResendMessage(null);
+    setLoading(true);
+
+    const supabase = createClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (signInError) {
+      setError(signInError.message);
+      return;
+    }
+
+    router.push("/post-login");
+    router.refresh();
+  }
+
+  async function resendConfirmationEmail() {
+    if (!email) {
+      setResendMessage("Enter your email first.");
+      return;
+    }
+
+    setResendLoading(true);
+    setResendMessage(null);
+
+    const supabase = createClient();
+    const { error: resendError } = await supabase.auth.resend({
+      type: "signup",
+      email,
+    });
+
+    setResendLoading(false);
+
+    if (resendError) {
+      setResendMessage(resendError.message);
+      return;
+    }
+
+    setResendMessage("Confirmation email sent. Check your inbox and spam folder.");
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">Email</span>
+        <input
+          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </label>
+
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">Password</span>
+        <input
+          className="w-full rounded-lg border border-gray-300 px-3 py-2"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </label>
+
+      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+
+      {canResendConfirmation ? (
+        <div className="space-y-2 rounded-lg bg-amber-50 p-3 text-sm">
+          <p className="text-amber-900">Your email is not confirmed yet.</p>
+          <button
+            type="button"
+            onClick={resendConfirmationEmail}
+            disabled={resendLoading}
+            className="rounded border border-amber-300 bg-white px-2 py-1 text-xs font-semibold text-amber-900"
+          >
+            {resendLoading ? "Sending..." : "Resend confirmation email"}
+          </button>
+          {resendMessage ? <p className="text-xs text-amber-900">{resendMessage}</p> : null}
+        </div>
+      ) : null}
+
+      <button
+        type="submit"
+        className="w-full rounded-lg bg-flyerYellow px-4 py-2 font-semibold text-gray-900"
+        disabled={loading}
+      >
+        {loading ? "Logging in..." : "Log in"}
+      </button>
+
+      {showDemoHelper ? (
+        <div className="space-y-2 rounded-lg border border-dashed border-gray-300 p-3 text-xs text-gray-700">
+          <p className="font-semibold uppercase tracking-wide text-gray-500">Dev demo helper</p>
+          <p>
+            Use real inbox aliases for demo users (for example, <code>yourname+demo.user@gmail.com</code>,
+            <code> yourname+demo.reference@gmail.com</code>, <code>yourname+demo.admin@gmail.com</code>).
+          </p>
+          <button type="button" className="rounded border px-2 py-1" onClick={useDemoPassword}>
+            Fill demo password only
+          </button>
+        </div>
+      ) : null}
+    </form>
+  );
+}
